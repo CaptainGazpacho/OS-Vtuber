@@ -16,7 +16,7 @@
             _ Distance measurement
             _ With these few things being tracked, it is likely that all expressions and movements can be tracked, with other aspects such as the motion of the body in proportion to the               head being calculated based on the distance measurement of the head
   * Haar Cascade
-							1. I will have to learn a little bit about machine learning to implement this feature, so if anyone could help me with this part, that is appreciated
+       1. I will have to learn a little bit about machine learning to implement this feature, so if anyone could help me with this part, that is appreciated
   * Likely others, these are just the ones I can confirm
   
 - Classes that will be required for both rigging and tracking:
