@@ -1,0 +1,21 @@
+* This is the design document for this piece of software for anyone who may want to contribute, if my design has flaws that could be fixed please help with those *
+
+* I am a relatively new programmer with very little experience, so this will likely be an incredibly difficult task for me to attempt *
+
+- I have figured up that, for a real time object tracking and mapping application, a low level, OOP language is the most effective language to use to maintain simplicity and efficiency. This is why I chose for this to be written in C++. However, I am certain that specific things may be better off written in C or Assembly.
+
+- Algorithms that will need to be implemented include:
+  * Motion differential (Uses the difference between multiple frames in order to create a decent map of what changes in order to cut down on compute time)
+  * Viola Jones (Will implement Haar Cascade in order to map out a face, specifically the nodes it is required to track using the differentail calculatede before)
+  * Haar Cascade
+  * Likely others these are just the ones I can confirm
+  
+- Classes that will be required for both rigging and tracking:
+  * Nodes (an object that will take in a set of coordinates mapped from a camera input using Haar features onto a model)
+  * Polygons (Triangular shapes that use nodes as vertices in order to distort certain pixel groups in such a way as to mimic the camera input onto the model)
+  * Mesh (This will be the parent class for polygons and nodes that will define their interactions, such that all distortions happen in a proportional way to all others)
+  * A class that handles encoding to standard video and image formats that also includes implementation as a virtual camera for recording software like OBS will be necessary
+  
+- A GUI would be nice to have early on in development, that way testing of image processing systems does not rely on a command line interface
+
+- I am unsure how many issues will arise when attempting to use this program across platforms, so any assistance with that is much appreciated
