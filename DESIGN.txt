@@ -4,11 +4,20 @@
 
 - I have figured up that, for a real time object tracking and mapping application, a low level, OOP language is the most effective language to use to maintain simplicity and efficiency. This is why I chose for this to be written in C++. However, I am certain that specific things may be better off written in C or Assembly.
 
+- I would certainly want this to implement the GPU on multiple threads in order to maintain high speed processing
+
 - Algorithms that will need to be implemented include:
   * Motion differential (Uses the difference between multiple frames in order to create a decent map of what changes in order to cut down on compute time)
   * Viola Jones (Will implement Haar Cascade in order to map out a face, specifically the nodes it is required to track using the differentail calculatede before)
+       1. We will need a few implementations of this:
+            _ Full head rotation
+            _ Eye tracking
+            _ Mouth tracking
+            _ Distance measurement
+            _ With these few things being tracked, it is likely that all expressions and movements can be tracked, with other aspects such as the motion of the body in proportion to the               head being calculated based on the distance measurement of the head
   * Haar Cascade
-  * Likely others these are just the ones I can confirm
+							1. I will have to learn a little bit about machine learning to implement this feature, so if anyone could help me with this part, that is appreciated
+  * Likely others, these are just the ones I can confirm
   
 - Classes that will be required for both rigging and tracking:
   * Nodes (an object that will take in a set of coordinates mapped from a camera input using Haar features onto a model)
