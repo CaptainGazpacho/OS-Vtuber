@@ -30,12 +30,6 @@
 - I am unsure how many issues will arise when attempting to use this program across platforms, so any assistance with that is much appreciated
 
 To start, here are some things to program:
-     * Multiplatform GUI Framework
-          - This will consist of:
-               1. A graphics library using Linux systems
-               2. A graphics library using Windows systems
-               3. A graphics library using Mac systems
-          - The system will have the same, original commands in each library, but the installation will detect what OS is being used on the client computer and install the appropriate library
      * A face detection and tracking library that will contain methods to track certain points on the face via neural network and the Viola-Jones algorithm
      * A polygon division library that will allow for the division of a model into a curvilinear mesh of polygons
      * A 3d distortions library to manipulate the curvilinear mesh using perspective calculations in order to accurately make the model appear 3d
