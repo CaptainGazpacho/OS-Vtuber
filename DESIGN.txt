@@ -1,37 +1,12 @@
-* This is the design document for this piece of software for anyone who may want to contribute, if my design has flaws that could be fixed please help with those *
+I honestly don't know what I'm doing, so I will just write things down as they come to me:
 
-* I am a relatively new programmer with very little experience, so this will likely be an incredibly difficult task for me to attempt *
-
-- I have figured up that, for a real time object tracking and mapping application, a low level, OOP language is the most effective language to use to maintain simplicity and efficiency. This is why I chose for this to be written in C++. However, I am certain that specific things may be better off written in C or Assembly.
-
-- I would certainly want this to implement the GPU on multiple threads in order to maintain high speed processing
-
-- Algorithms that will need to be implemented include:
-  * Motion differential (Uses the difference between multiple frames in order to create a decent map of what changes in order to cut down on compute time)
-  * Viola Jones (Will implement Haar Cascade in order to map out a face, specifically the nodes it is required to track using the differentail calculatede before)
-       1. We will need a few implementations of this:
-            _ Full head rotation
-            _ Eye tracking
-            _ Mouth tracking
-            _ Distance measurement
-            _ With these few things being tracked, it is likely that all expressions and movements can be tracked, with other aspects such as the motion of the body in proportion to the               head being calculated based on the distance measurement of the head
-  * Haar Cascade
-       1. I will have to learn a little bit about machine learning to implement this feature, so if anyone could help me with this part, that is appreciated
-  * Likely others, these are just the ones I can confirm
-  
-- Classes that will be required for both rigging and tracking:
-  * Nodes (an object that will take in a set of coordinates mapped from a camera input using Haar features onto a model)
-  * Polygons (Triangular shapes that use nodes as vertices in order to distort certain pixel groups in such a way as to mimic the camera input onto the model)
-  * Mesh (This will be the parent class for polygons and nodes that will define their interactions, such that all distortions happen in a proportional way to all others)
-  * A class that handles encoding to standard video and image formats that also includes implementation as a virtual camera for recording software like OBS will be necessary
-  
-- A GUI would be nice to have early on in development, that way testing of image processing systems does not rely on a command line interface
-
-- I am unsure how many issues will arise when attempting to use this program across platforms, so any assistance with that is much appreciated
-
-To start, here are some things to program:
-     * A face detection and tracking library that will contain methods to track certain points on the face via neural network and the Viola-Jones algorithm
-     * A polygon division library that will allow for the division of a model into a curvilinear mesh of polygons
-     * A 3d distortions library to manipulate the curvilinear mesh using perspective calculations in order to accurately make the model appear 3d
-     * A library to take in a multilayer image and manipulate it
-     * A library to output video to a virtual camera application like OBS
+* I/O needs to take in video, a multilayer image + some others I guess, a bunch of parameters, and output a video
+* The input must be divided into nodes and made and the values must be stored.
+* Specific nodes to track: Stationary nodes like the nose, and eye corners, dynamic nodes like the tops and bottoms of the eyes and mouth
+* A system to take that information and map it to certain expressions, as well as use the rotation to generate curvilinear distortions to make the form appear 3d
+* A system to take the rotation data and use it to apply 3d perspective equations to a curvilinear plane of polygons
+* A polygon system made up of nodes to divide an image into a mesh of polygons that can be independently distorted
+* A bone rigging structure, probably using straight node connections to make a rigid form
+* A method to use interpolations to accurately distort each polygon
+* A method of outputting the constantly distorted image as video to some recording/ streaming mechanism
+*A GUI that gives direct access to all of these values such that they can be intuitively altered with visualization
