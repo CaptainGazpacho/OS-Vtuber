@@ -216,9 +216,7 @@ string stringifyweights(vector<double> weights) // This stringifies the weights 
     for (int i = 0; i < weights.size(); i++)
     {
         finalstring += to_string(weights.at(i));
-        if (i + 1 != weights.size()) {
-            finalstring += ",";
-        }
+        finalstring += ",";
     }
     return finalstring;
 }
