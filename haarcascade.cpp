@@ -17,7 +17,7 @@ using namespace std;
 
 vector<double> globretvals[2];
 
-class Timer
+class Timer // This is the timer which calculates the time for each 120 weak classes
 {
 private:
     using clock_type = chrono::steady_clock;
@@ -35,12 +35,12 @@ public:
     }
 };
 
-class weightscls 
+class weightscls // This is the weights class which deals with everything to do with the weights
 {
 private:
     vector<double> weights;
 public:
-    void normalize() 
+    void normalize() // This normalizes the weights
     {
         double weightlinnorm = 0;
         for (int s = 0; s < weights.size(); s++)
@@ -53,27 +53,26 @@ public:
             weights.at(s) = weights.at(s) / weightlinnorm;
         }
     }
-    void error(double beta) 
+    void error(double beta) // This calculates the new weights based on the error
     {
         for (int s = 0; s < weights.size(); s++)
         {
             weights.at(s) = weights.at(s) * (pow(beta, (1 - globretvals[1].at(s))));
         }
     }
-    vector<double> returnweights() 
+    vector<double> returnweights()  // Getter
     {
         return weights;
     }
-    void changeweights(vector<double> newweights) 
+    void changeweights(vector<double> newweights)  // Setter
     {
         weights = newweights;
     }
-    int prepforstore() 
+    int prepforstore() // This prepares the weights for store by making sure the smallest value is above 100000
     {
         double temp;
         int tento = 0;
         double min = numeric_limits<double>::infinity();
-        cout << weights.size();
         for (int i = 0; i < weights.size(); i++)
         {
             if (min > weights.at(i)) {
@@ -92,7 +91,7 @@ public:
         }
         return tento;
     }
-    void restore(int tento) 
+    void restore(int tento) // This restores the weights to their original value
     {
         for (int i = 0; i < weights.size(); i++) 
         {
@@ -101,9 +100,9 @@ public:
     }
 };
 
-weightscls globalweights;
+weightscls globalweights; // Makes a global weights class
 
-struct rectreg
+struct rectreg // This is the basic structure that makes up a weak class
 {
     int x;
     int y;
@@ -111,7 +110,7 @@ struct rectreg
     int height;
 };
 
-struct weakclass
+struct weakclass // This is the weak class which is used in the calculation of a stage
 {
     rectreg* pos;
     rectreg* neg;
@@ -121,7 +120,7 @@ struct weakclass
     int negsize;
 };
 
-struct parameters
+struct parameters // This is the pass parameters for threading functions
 {
     vector<double> weights;
     vector<vector<vector<int>>> integrals;
@@ -131,7 +130,7 @@ struct parameters
     int threadnum;
 };
 
-struct stagedet
+struct stagedet // This is a stage which is used to calculate whether a selected image is a face
 {
     vector<weakclass> weakclasses;
     int stagenum;
@@ -139,17 +138,17 @@ struct stagedet
 };
 
 
-struct haarstages
+struct haarstages // A structure to store the stages
 {
     vector<stagedet> stages;
 };
 
-struct featret
+struct featret // A structure to store the return values of features
 {
     vector<vector<vector<rectreg>>> vals;
 };
 
-struct state
+struct state // A structure to store the state of the code
 {
     vector<weakclass> looseclasses;
     vector<stagedet> stages;
@@ -159,19 +158,19 @@ struct state
     int failed;
 };
 
-struct weakclassesret 
+struct weakclassesret // A structure which is used to return the weakclasses
 {
     vector<weakclass> retclasses;
 };
 
-struct inforeturn
+struct inforeturn // A structure which is used to return the info of the haar cascade training
 {
     int stagenum;
     int placeinstage;
     int tento;
 };
 
-string stringifylooseclasses(vector<weakclass> looseclasses)
+string stringifylooseclasses(vector<weakclass> looseclasses) // This stringifies the loose classes to be stored
 {
     string finalstring;
     for (int i = 0; i < looseclasses.size(); i++)
@@ -195,7 +194,7 @@ string stringifylooseclasses(vector<weakclass> looseclasses)
     return finalstring;
 }
 
-string stringifystages(vector<stagedet> stages)
+string stringifystages(vector<stagedet> stages) // This stringifies the stages to be stored
 {
     string finalstring;
     for (int i = 0; i < stages.size(); i++)
@@ -211,7 +210,7 @@ string stringifystages(vector<stagedet> stages)
     return finalstring;
 }
 
-string stringifyweights(vector<double> weights)
+string stringifyweights(vector<double> weights) // This stringifies the weights to be stored
 {
     string finalstring;
     for (int i = 0; i < weights.size(); i++)
@@ -224,14 +223,14 @@ string stringifyweights(vector<double> weights)
     return finalstring;
 }
 
-string stringifyinfo(int stagenum, int placeinstage)
+string stringifyinfo(int stagenum, int placeinstage) // This stringifies the info to be stored
 {
     string finalstring;
     finalstring += to_string(stagenum) + "," + to_string(placeinstage) + "," + to_string(globalweights.prepforstore());
     return finalstring;
 }
 
-weakclass destringifyweakclass(string strlooseclass)
+weakclass destringifyweakclass(string strlooseclass) // This de-stringifies a weak class to be turned into the weakclass struct
 {
     static weakclass looseclass;
     int posnumstart = strlooseclass.find(":");
@@ -371,7 +370,7 @@ weakclass destringifyweakclass(string strlooseclass)
     return looseclass;
 }
 
-inforeturn destringifyinfo(string strinfo)
+inforeturn destringifyinfo(string strinfo) // This de-stringifies the info to be returned as the inforeturn structure
 {
     string stagenumstr;
     int stagenumend = strinfo.find(",");
@@ -400,7 +399,7 @@ inforeturn destringifyinfo(string strinfo)
     return returnval;
 }
 
-vector<double> destringifyweights(string strweights)
+vector<double> destringifyweights(string strweights) // This de-stringifies the weights and returns them as a vector
 {
     vector<double> weights;
     string weightsstr;
@@ -418,7 +417,7 @@ vector<double> destringifyweights(string strweights)
     return weights;
 }
 
-int savestate(state currentstate, string filename)
+int savestate(state currentstate, string filename) // This puts all the stringify functions together to store the current state
 {
     try {
         ofstream loosestatefile;
@@ -448,7 +447,7 @@ int savestate(state currentstate, string filename)
     }
 }
 
-state loadstate(string filename)
+state loadstate(string filename) // This puts all the de-stringify functions together to load the state from the files
 {
     try {
         state currentstate;
@@ -539,7 +538,7 @@ state loadstate(string filename)
     }
 }
 
-featret returnfeat(vector<int> shape)
+featret returnfeat(vector<int> shape) // This creates and returns features which will be used to create weak classes
 {
     int height = shape.at(1);
     int width = shape.at(0);
@@ -635,9 +634,9 @@ featret returnfeat(vector<int> shape)
     return featuresret;
 }
 
-int compfeatvals[4];
+int compfeatvals[4]; // This is a global value which is used to return the calculations of the compute_feature function
 
-void compute_feature(const int integral[19][19], const register weakclass wclass, int threadnum)
+void compute_feature(const int integral[19][19], const register weakclass wclass, int threadnum) // This calculates teh output of each feature
 {
     static rectreg temprect;
     static int temptotal = 0;
@@ -679,7 +678,7 @@ void compute_feature(const int integral[19][19], const register weakclass wclass
 }
 
 
-weakclassesret train_weak(const vector<vector<vector<int>>> X, const vector<int> y, const vector<weakclass> weakclasses, const vector<double> weights)
+weakclassesret train_weak(const vector<vector<vector<int>>> X, const vector<int> y, const vector<weakclass> weakclasses, const vector<double> weights) // This will train the weak classes to attempt to improve them
 {
     weakclassesret retvals;
     double totalpos = 0;
@@ -725,7 +724,7 @@ weakclassesret train_weak(const vector<vector<vector<int>>> X, const vector<int>
             if (error < minerror) {
                 minerror = error;
                 bestfeature = weakclasses.at(i);
-                if (posseen > negseen) {
+                if (posweight > negweight) {
                     bestpol = 1;
                 }
                 else {
@@ -749,7 +748,7 @@ weakclassesret train_weak(const vector<vector<vector<int>>> X, const vector<int>
 }
 
 
-vector<vector<int>> integral_img(vector<vector<int>> img)
+vector<vector<int>> integral_img(vector<vector<int>> img) // This creates an integral image and returns it as a vector
 {
 
     for (int i = 0; i < img.size(); i++)
@@ -770,7 +769,8 @@ vector<vector<int>> integral_img(vector<vector<int>> img)
     return img;
 }
 
-vector<vector<vector<double>>> weakerrorcalc(parameters params) {
+vector<vector<vector<double>>> weakerrorcalc(parameters params)  // This calculates the error of each of the weak classes
+{
     const vector<vector<vector<int>>> integrals = params.integrals;
     const vector<double> weights = params.weights;
     const vector<weakclass> weakclasses = params.weakclasses;
@@ -814,7 +814,7 @@ vector<vector<vector<double>>> weakerrorcalc(parameters params) {
     return allvals;
 }
 
-void select_best(const vector<weakclass> weakclasses, const vector<vector<vector<int>>> integrals, const vector<double> weights, const vector<int> trueval)
+void select_best(const vector<weakclass> weakclasses, const vector<vector<vector<int>>> integrals, const vector<double> weights, const vector<int> trueval) // This selects best out of all the classes
 {
     int bestclass;
     double besterror = numeric_limits<double>::infinity();
@@ -917,7 +917,7 @@ void select_best(const vector<weakclass> weakclasses, const vector<vector<vector
 
 
 
-haarstages train(vector<vector<vector<int>>> train, const vector<int> posneg, vector<int> shape, int stagesize, int stageam, double passthresh, string checkname)
+haarstages train(vector<vector<vector<int>>> train, const vector<int> posneg, vector<int> shape, int stagesize, int stageam, double passthresh, string checkname) // This is the main function for creating and training the haar cascade
 {
     vector <double> weights(train.size(), 0);
     int pos = 0;
