@@ -372,18 +372,18 @@ inforeturn destringifyinfo(string strinfo) // This de-stringifies the info to be
 {
     string stagenumstr;
     int stagenumend = strinfo.find(",");
-    for (int i = 0; i < stagenumend + 1; i++)
+    for (int i = 0; i < stagenumend; i++)
     {
-        stagenumstr += strinfo[1 + i];
+        stagenumstr += strinfo[i];
     }
     int stagenum;
     stringstream(stagenumstr) >> stagenum;
     strinfo.erase(0, stagenumend + 1);
     string placeinstagenumstr;
     int placeinstagenumend = strinfo.find(",");
-    for (int i = 0; i < placeinstagenumend + 1; i++)
+    for (int i = 0; i < placeinstagenumend; i++)
     {
-        placeinstagenumstr += strinfo[1 + i];
+        placeinstagenumstr += strinfo[i];
     }
     int placeinstagenum;
     stringstream(placeinstagenumstr) >> placeinstagenum;
